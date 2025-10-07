@@ -1,19 +1,21 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SplineBoat : MonoBehaviour
 {
+    public CinemachineSplineCart dollykart;
     public SplineTrack CurrentTrack;
 
     bool grounded = true;
     bool jumping;
     float LRsteer;
-    public float SteerSpeed, jumpPower, gravity, quickfallSpeed ;
+    public float SteerSpeed=10, jumpPower=10, gravity=5, quickfallSpeed=20, ForwardSpeed=40;
     float ySpeed;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        setSpeed(ForwardSpeed);
     }
 
     // Update is called once per frame
@@ -27,6 +29,8 @@ public class SplineBoat : MonoBehaviour
             transform.localPosition += Vector3.up * ySpeed*Time.deltaTime;
             ySpeed -= Time.deltaTime*gravity;
             if(!jumping) ySpeed -= Time.deltaTime*quickfallSpeed;
+            
+            if(jumping && ySpeed < 0) jumping = false;
 
             if (ySpeed < 0 && transform.localPosition.y < 0)
             {
@@ -43,6 +47,7 @@ public class SplineBoat : MonoBehaviour
                     //landing
                     jumping = false;
                     grounded = true;
+                    transform.localPosition = new Vector3(transform.localPosition.x,0,transform.localPosition.z);
                 }
             }
         }
@@ -76,5 +81,13 @@ public class SplineBoat : MonoBehaviour
         else if(value.Get()== null) { jumping = false; }
     }
 
-    
+    void setSpeed(float newSpeed)
+    {
+        var autodolly = dollykart.AutomaticDolly.Method as SplineAutoDolly.FixedSpeed;
+        if (autodolly != null)
+        {
+            autodolly.Speed = newSpeed;
+        }
+
+    }
 }

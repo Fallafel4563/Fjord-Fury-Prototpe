@@ -151,7 +151,7 @@ MonoBehaviour:
   m_SplineSettings:
     Spline: {fileID: 1174813525}
     Position: 0
-    Units: 1
+    Units: 0
   UpdateMethod: 0
   AutomaticDolly:
     Enabled: 1
@@ -167,7 +167,7 @@ MonoBehaviour:
     - rid: 1355116249832227077
       type: {class: SplineAutoDolly/FixedSpeed, ns: Unity.Cinemachine, asm: Unity.Cinemachine}
       data:
-        Speed: 0.05
+        Speed: 40
 --- !u!4 &165698534
 Transform:
   m_ObjectHideFlags: 0
@@ -618,10 +618,10 @@ MonoBehaviour:
         z: 184.73239
       Rotation:
         value:
-          x: 0.09694548
-          y: -0.42588308
+          x: 0.09694547
+          y: -0.4258831
           z: 0.1710601
-          w: 0.8831555
+          w: 0.8831554
     m_MetaData:
     - Mode: 2
       Tension: 0.5
@@ -850,7 +850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1614445023
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6430,11 +6430,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c34cef675271fbc4da248a609cc0bea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplineBoat
+  dollykart: {fileID: 165698533}
   CurrentTrack: {fileID: 1174813527}
-  SteerSpeed: 2
-  jumpPower: 6
+  SteerSpeed: 10
+  jumpPower: 10
   gravity: 5
   quickfallSpeed: 20
+  ForwardSpeed: 40
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System.Collections;
 using Unity.Cinemachine;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -43,7 +44,7 @@ public class SplineBoat : MonoBehaviour
                 //missed the road, uh oh
                 print("oops you died");
                 deathLerp = true;
-                resetLerp = 0.4f;
+                resetLerp = .5f;
                 jumping = false;
                 dollykart.AutomaticDolly.Enabled = true;
                 grounded = true;
@@ -106,7 +107,7 @@ public class SplineBoat : MonoBehaviour
     {
         if(resetLerp > 0)
         {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(deathLerp?0:transform.localPosition.x, 0, 0),1f-resetLerp);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(deathLerp?0:transform.localPosition.x, 0, 0),1-resetLerp);
             resetLerp -= Time.deltaTime;
         }
         else
@@ -129,12 +130,16 @@ public class SplineBoat : MonoBehaviour
         {
             //landing
             grounded=true;
-            dollykart.SplinePosition=ST.EvaluateBasedOnWorldPosition(transform.position);
+            
+            EvalInfo Dupeditt = ST.EvaluateBasedOnWorldPosition(transform.position);
+            dollykart.SplinePosition = Dupeditt.t;
+
+
             ySpeed = 0;
             dollykart.AutomaticDolly.Enabled = true;
             transform.parent = dollykart.transform;
-            resetLerp = 0.3f;
-            //transform.localPosition = new Vector3(transform.localPosition.x, 0, 0);
+
+            transform.localPosition = new Vector3(Vector3.Distance(transform.position,Dupeditt.SplinePos) * Mathf.Sign(transform.localPosition.x), 0, 0);
         }
     }
 }

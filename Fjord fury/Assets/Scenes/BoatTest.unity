@@ -433,8 +433,9 @@ GameObject:
   - component: {fileID: 1174813522}
   - component: {fileID: 1174813521}
   - component: {fileID: 1174813527}
+  - component: {fileID: 1174813528}
   m_Layer: 0
-  m_Name: Dolly Spline
+  m_Name: Track
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -458,17 +459,17 @@ MonoBehaviour:
   m_RebuildFrequency: 30
   m_UpdateColliders: 1
   m_Sides: 8
-  m_SegmentsPerUnit: 4
+  m_SegmentsPerUnit: 0.05
   m_Capped: 0
   m_Radius: 20
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
   m_Shape:
-    rid: 1355116249832227112
+    rid: 1887259101751148811
   references:
     version: 2
     RefIds:
-    - rid: 1355116249832227112
+    - rid: 1887259101751148811
       type: {class: Road, ns: UnityEngine.Splines.ExtrusionShapes, asm: Unity.Splines}
       data: 
 --- !u!23 &1174813522
@@ -618,10 +619,10 @@ MonoBehaviour:
         z: 184.73239
       Rotation:
         value:
-          x: 0.09694547
-          y: -0.4258831
+          x: 0.09694548
+          y: -0.42588308
           z: 0.1710601
-          w: 0.8831554
+          w: 0.8831555
     m_MetaData:
     - Mode: 2
       Tension: 0.5
@@ -670,10 +671,32 @@ MonoBehaviour:
   OnEnd:
     m_PersistentCalls:
       m_Calls: []
-  extruder: {fileID: 1174813521}
-  WidthGizmo: 1
+  extruder: {fileID: 0}
+  WidthGizmo: 0
   width: 10
   multiplier: 2
+--- !u!64 &1174813528
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174813520}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &1369140043
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,33 +1171,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78f9f97d9886c9f438258460299d0e27, type: 3}
---- !u!54 &2069782719
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3515388973296292394}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &650197454065170103
 GameObject:
   m_ObjectHideFlags: 0
@@ -1321,9 +1317,9 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.37341225
   m_Height: 2.1104445
@@ -6250,8 +6246,8 @@ GameObject:
   - component: {fileID: 3004395975302418605}
   - component: {fileID: 8776464512830807244}
   - component: {fileID: 1678101806323167442}
-  - component: {fileID: 2069782719}
   - component: {fileID: 8776464512830807245}
+  - component: {fileID: 8776464512830807246}
   m_Layer: 0
   m_Name: PlayerBoat
   m_TagString: Untagged
@@ -6432,11 +6428,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SplineBoat
   dollykart: {fileID: 165698533}
   CurrentTrack: {fileID: 1174813527}
+  ColRef: {fileID: 1678101806323167442}
   SteerSpeed: 10
   jumpPower: 10
   gravity: 5
   quickfallSpeed: 20
   ForwardSpeed: 40
+--- !u!54 &8776464512830807246
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3515388973296292394}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

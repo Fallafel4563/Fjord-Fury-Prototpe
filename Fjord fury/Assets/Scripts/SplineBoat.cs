@@ -39,7 +39,7 @@ public class SplineBoat : MonoBehaviour
             
             if(jumping && ySpeed < 0) jumping = false;
 
-            if (ySpeed < 0 && transform.localPosition.y < -10)
+            if (ySpeed < 0 && transform.localPosition.y < -20)
             {
                 //missed the road, uh oh
                 print("oops you died");
@@ -75,7 +75,7 @@ public class SplineBoat : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        print("JUMPS: "+ value.Get());
+        //print("JUMPS: "+ value.Get());
         if(grounded && value.Get()!= null) 
         {
             StartCoroutine(DisableColliderBriefly());
@@ -125,9 +125,15 @@ public class SplineBoat : MonoBehaviour
     {
         
 
-        Debug.Log(other.name);
+        //Debug.Log(other.name);
         if (other.gameObject.TryGetComponent<SplineTrack>(out SplineTrack ST)&& !grounded)
         {
+            if(CurrentTrack != ST)
+            {
+                //new TRACK!
+                dollykart.Spline = ST.Track;
+                CurrentTrack = ST;
+            }
             //landing
             grounded=true;
             
@@ -139,6 +145,7 @@ public class SplineBoat : MonoBehaviour
             dollykart.AutomaticDolly.Enabled = true;
             transform.parent = dollykart.transform;
 
+            Debug.Log(Vector3.Distance(transform.position, Dupeditt.SplinePos) * Mathf.Sign(transform.localPosition.x));
             transform.localPosition = new Vector3(Vector3.Distance(transform.position,Dupeditt.SplinePos) * Mathf.Sign(transform.localPosition.x), 0, 0);
         }
     }

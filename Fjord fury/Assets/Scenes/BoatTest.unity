@@ -619,10 +619,10 @@ MonoBehaviour:
         z: 184.73239
       Rotation:
         value:
-          x: 0.09694548
-          y: -0.42588308
+          x: 0.09694547
+          y: -0.4258831
           z: 0.1710601
-          w: 0.8831555
+          w: 0.8831554
     m_MetaData:
     - Mode: 2
       Tension: 0.5

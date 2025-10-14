@@ -41772,14 +41772,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c34cef675271fbc4da248a609cc0bea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplineBoat
+  Camera: {fileID: 783316552}
   dollykart: {fileID: 145508409}
   CurrentTrack: {fileID: 2039224647}
+  ModelHolder: {fileID: 1758854152}
   ColRef: {fileID: 1466503878}
-  SteerSpeed: 14
+  SteerSpeed: 15
   jumpPower: 15
-  gravity: 40
-  quickfallSpeed: 20
-  ForwardSpeed: 40
+  gravity: 50
+  quickfallSpeed: 75
+  ForwardSpeed: 50
+  FrontBackOffsetLimit: 5
+  DeathPos: {fileID: 0}
 --- !u!54 &1466503877
 Rigidbody:
   m_ObjectHideFlags: 0

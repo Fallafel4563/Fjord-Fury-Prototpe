@@ -46,7 +46,7 @@ public class SplineTrack : MonoBehaviour
     public EvalInfo EvaluateBasedOnWorldPosition(Vector3 WorldPos)
     {
         lastPlayerPos = WorldPos;
-
+        
         SplineUtility.GetNearestPoint(Track[0], WorldPos - transform.position, out Unity.Mathematics.float3 nearest, out float t);
         print("T: " + t.ToString());
         t *= Track[0].GetLength();

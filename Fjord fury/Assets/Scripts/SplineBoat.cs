@@ -8,7 +8,7 @@ public class SplineBoat : MonoBehaviour
 {
     public CinemachineCamera Camera;
     public CinemachineSplineCart dollykart;
-    public SplineTrack CurrentTrack;
+    public SplineTrack CurrentTrack, MainTrack;
     public Transform ModelHolder;
     public Collider ColRef;
     bool grounded = true;
@@ -29,6 +29,8 @@ public class SplineBoat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
         if(died) { Camera.transform.position =camDeathPos.position; }
         LerpPos();
 
@@ -73,6 +75,16 @@ public class SplineBoat : MonoBehaviour
             {
                 transform.localPosition = new Vector3(CurrentTrack.width* Mathf.Sign(transform.localPosition.x), transform.localPosition.y, transform.localPosition.z);
             }
+
+            if (dollykart.SplinePosition > 0.99f * CurrentTrack.Track.Spline.GetLength())
+            {
+                if (CurrentTrack.IsGrindRail)
+                {
+                    Jump();
+                }
+                CurrentTrack.OnEnd.Invoke();
+            }
+
         }
 
         BoatAnim();
@@ -96,20 +108,39 @@ public class SplineBoat : MonoBehaviour
         //print("JUMPS: "+ value.Get());
         if(grounded && value.Get()!= null) 
         {
-            timeSinceJump = 0.2f;
+            Jump();
+        }
+        else if(value.Get()== null) { jumping = false; }
+    }
+
+    void Jump()
+    {
+        if (CurrentTrack.IsGrindRail)
+        {
+            Vector3 globalpos = transform.position;
+            CurrentTrack = MainTrack;
+            dollykart.Spline = MainTrack.Track;
+            //Find right relative position
+            EvalInfo Dupeditt = MainTrack.EvaluateBasedOnWorldPosition(transform.position);
+            Vector3 newpos = globalpos - Dupeditt.SplinePos;
+            
+            dollykart.SplinePosition = Dupeditt.t;
+
+            transform.localPosition = newpos;
+
+        }
+        timeSinceJump = 0.2f;
             StartCoroutine(DisableColliderBriefly());
             //jump()
             dollykart.AutomaticDolly.Enabled = false;
             grounded = false;
             ySpeed = jumpPower;
             jumping = true;
-        }
-        else if(value.Get()== null) { jumping = false; }
     }
 
     public void OnH(InputValue inputValue)
     {
-        dollykart.SplinePosition += 0.1f*100000;
+        dollykart.SplinePosition += 0.1f*CurrentTrack.Track.Spline.GetLength();
         print("HYPEERJUMP");   
     }
     void setSpeed(float newSpeed)

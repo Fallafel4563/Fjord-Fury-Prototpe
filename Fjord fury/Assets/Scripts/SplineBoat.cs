@@ -170,6 +170,7 @@ public class SplineBoat : MonoBehaviour
             }
             //landing
             grounded=true;
+            ST.OnBoatEnter.Invoke();
             
             EvalInfo Dupeditt = ST.EvaluateBasedOnWorldPosition(transform.position);
             dollykart.SplinePosition = Dupeditt.t;

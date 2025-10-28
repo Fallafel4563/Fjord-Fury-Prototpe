@@ -7,7 +7,7 @@ using UnityEngine.Splines;
 public class SplineTrack : MonoBehaviour
 {
     public bool IsGrindRail;
-    public UnityEvent OnEnd;
+    public UnityEvent OnBoatEnter,OnEnd;
     [NonSerialized] public SplineContainer Track;
     public SplineExtrude extruder;
     public bool WidthGizmo = true;

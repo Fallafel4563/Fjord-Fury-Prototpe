@@ -6,6 +6,7 @@ using UnityEngine.Splines;
 
 public class SplineTrack : MonoBehaviour
 {
+    public float overrideSpeed;
     public bool IsGrindRail;
     public UnityEvent OnBoatEnter,OnEnd;
     [NonSerialized] public SplineContainer Track;

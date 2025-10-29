@@ -14,7 +14,7 @@ public class SplineBoat : MonoBehaviour
     bool grounded = true;
     bool jumping;
     float LRsteer;
-    public float SteerSpeed=10, jumpPower=10, gravity=10, quickfallSpeed=20, ForwardSpeed=40,FrontBackOffsetLimit=3;
+    public float SteerSpeed=10, jumpPower=10, gravity=10, quickfallSpeed=20, BaseForwardSpeed=40,FrontBackOffsetLimit=3;
     float ySpeed,resetLerp, timeSinceJump, FwdInput;
     bool deathLerp, died;
     public GameObject DeathPos;
@@ -23,7 +23,7 @@ public class SplineBoat : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        setSpeed(ForwardSpeed);
+        setSpeed(BaseForwardSpeed);
     }
 
     // Update is called once per frame
@@ -39,7 +39,7 @@ public class SplineBoat : MonoBehaviour
         if (!grounded)
         {
             timeSinceJump += Time.deltaTime;
-            transform.localPosition += Vector3.forward * ForwardSpeed * Time.deltaTime;
+            transform.localPosition += Vector3.forward * BaseForwardSpeed * Time.deltaTime;
             transform.localPosition += Vector3.up * ySpeed*Time.deltaTime;
             ySpeed -= Time.deltaTime* gravity *timeSinceJump*timeSinceJump;
             if(!jumping) ySpeed -= Time.deltaTime*quickfallSpeed *timeSinceJump*timeSinceJump;
@@ -127,6 +127,7 @@ public class SplineBoat : MonoBehaviour
             dollykart.SplinePosition = Dupeditt.t;
 
             transform.localPosition = newpos;
+            setSpeed(BaseForwardSpeed);
 
         }
         timeSinceJump = 0.2f;
@@ -191,13 +192,21 @@ public class SplineBoat : MonoBehaviour
         
 
         //Debug.Log(other.name);
-        if (other.gameObject.TryGetComponent<SplineTrack>(out SplineTrack ST)&& !grounded)
+        if (other.gameObject.TryGetComponent<SplineTrack>(out SplineTrack ST)&&( !grounded)||ST != CurrentTrack )
         {
             if(CurrentTrack != ST)
             {
                 //new TRACK!
+                if(ST.overrideSpeed > BaseForwardSpeed)
+                {
+                setSpeed(ST.overrideSpeed);
+                }
                 dollykart.Spline = ST.Track;
                 CurrentTrack = ST;
+                if (!ST.IsGrindRail)
+                {
+                    MainTrack = ST;
+                }
             }
             //landing
             grounded=true;

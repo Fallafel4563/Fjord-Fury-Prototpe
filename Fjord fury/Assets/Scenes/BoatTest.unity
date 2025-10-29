@@ -422,7 +422,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802822953}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.18808226, y: 0.6870914, z: -0.67520285, w: -0.19139393}
+  m_LocalRotation: {x: -0.18808226, y: 0.6870914, z: -0.67520285, w: -0.1913939}
   m_LocalPosition: {x: -1121.8445, y: -238.25464, z: 432.94653}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -622,7 +622,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 898459216}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.18808226, y: 0.6870914, z: -0.67520285, w: -0.19139393}
+  m_LocalRotation: {x: -0.18808226, y: 0.6870914, z: -0.67520285, w: -0.1913939}
   m_LocalPosition: {x: -1121.8445, y: -238.25464, z: 432.94653}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1040,6 +1040,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplineTrack
   IsGrindRail: 0
+  OnBoatEnter:
+    m_PersistentCalls:
+      m_Calls: []
   OnEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -1520,7 +1523,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd62a2e81c6a6a44ab2e5ba06eba736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplineTrack
-  IsGrindRail: 0
+  IsGrindRail: 1
+  OnBoatEnter:
+    m_PersistentCalls:
+      m_Calls: []
   OnEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -7087,6 +7093,7 @@ MonoBehaviour:
   Camera: {fileID: 898459220}
   dollykart: {fileID: 165698533}
   CurrentTrack: {fileID: 1174813527}
+  MainTrack: {fileID: 1174813527}
   ModelHolder: {fileID: 1276821965354773041}
   ColRef: {fileID: 1678101806323167442}
   SteerSpeed: 15

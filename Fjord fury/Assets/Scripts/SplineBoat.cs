@@ -192,7 +192,7 @@ public class SplineBoat : MonoBehaviour
         
 
         //Debug.Log(other.name);
-        if (other.gameObject.TryGetComponent<SplineTrack>(out SplineTrack ST)&&( !grounded)||ST != CurrentTrack )
+        if (other.gameObject.TryGetComponent<SplineTrack>(out SplineTrack ST)&&( !grounded||ST != CurrentTrack) )
         {
             if(CurrentTrack != ST)
             {

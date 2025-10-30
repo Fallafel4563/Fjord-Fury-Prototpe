@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.Cinemachine;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class SplineBoat : MonoBehaviour
@@ -12,14 +13,14 @@ public class SplineBoat : MonoBehaviour
     public Transform ModelHolder;
     public Collider ColRef;
     bool grounded = true;
-    bool jumping;
-    float LRsteer;
+    bool jumping, dashing;
+    float LRsteer, DashDirection, dashTime;
     public float SteerSpeed=10, jumpPower=10, gravity=10, quickfallSpeed=20, BaseForwardSpeed=40,FrontBackOffsetLimit=3;
     float ySpeed,resetLerp, timeSinceJump, FwdInput;
     bool deathLerp, died;
     public GameObject DeathPos;
     Transform camDeathPos;
-
+    public UnityEvent Ldash, Rdash;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,7 +35,7 @@ public class SplineBoat : MonoBehaviour
         if(died) { Camera.transform.position =camDeathPos.position; }
         LerpPos();
 
-        transform.localPosition += Vector3.right * LRsteer * Time.deltaTime * SteerSpeed;
+        transform.localPosition += (Vector3.right * LRsteer * Time.deltaTime * SteerSpeed) + Vector3.right * (dashing ? 100*dashTime*Time.deltaTime * DashDirection : 0);
 
         if (!grounded)
         {
@@ -67,6 +68,7 @@ public class SplineBoat : MonoBehaviour
         }
         else // grounded
         {
+           
 
             transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, Mathf.Clamp(transform.localPosition.z + FwdInput*SteerSpeed *( 1.1f- Mathf.Abs( transform.localPosition.z)/FrontBackOffsetLimit ) * Time.deltaTime, -FrontBackOffsetLimit, FrontBackOffsetLimit));
 
@@ -85,7 +87,23 @@ public class SplineBoat : MonoBehaviour
                 CurrentTrack.OnEnd.Invoke();
             }
 
+            if (dashTime <= 0)
+            {
+                dashing = false;
+                dashTime = 0;
+            }
+            else
+            {
+                dashTime -= Time.deltaTime;
+                dashTime = Mathf.Max(dashTime, 0);
+
+            }
         }
+
+     
+        
+        
+        
 
         BoatAnim();
     }
@@ -117,6 +135,7 @@ public class SplineBoat : MonoBehaviour
     {
         if (CurrentTrack.IsGrindRail)
         {
+            
             Vector3 globalpos = transform.position;
             CurrentTrack = MainTrack;
             dollykart.Spline = MainTrack.Track;
@@ -137,6 +156,7 @@ public class SplineBoat : MonoBehaviour
             grounded = false;
             ySpeed = jumpPower;
             jumping = true;
+        dashing = false;
     }
 
     public void OnH(InputValue inputValue)
@@ -144,6 +164,28 @@ public class SplineBoat : MonoBehaviour
         dollykart.SplinePosition += 0.1f*CurrentTrack.Track.Spline.GetLength();
         print("HYPEERJUMP");   
     }
+
+    public void OnLDash(InputValue inputValue)
+    {
+        if (dashing == false)
+        {
+            dashTime = 0.3f;
+            Ldash.Invoke();
+            dashing = true;
+            DashDirection = -1;
+        }
+    }
+    public void OnRDash(InputValue inputValue)
+    {
+        if (dashing == false)
+        {
+            dashTime = 0.3f;
+            Rdash.Invoke();
+            dashing = true;
+            DashDirection = 1;
+        }
+    }
+
     void setSpeed(float newSpeed)
     {
         var autodolly = dollykart.AutomaticDolly.Method as SplineAutoDolly.FixedSpeed;
@@ -209,6 +251,8 @@ public class SplineBoat : MonoBehaviour
                 }
             }
             //landing
+            dashing = false;
+            dashTime = 0;
             grounded=true;
             ST.OnBoatEnter.Invoke();
             
@@ -234,8 +278,8 @@ public class SplineBoat : MonoBehaviour
         Vector3 NewRot = transform.localEulerAngles;
 
         NewRot.x = -ySpeed * 2;
-        NewRot.y = Mathf.LerpAngle(NewRot.y, LRsteer * SteerSpeed *2, Time.deltaTime*10); 
-        NewRot.z = Mathf.LerpAngle(NewRot.z,-LRsteer*SteerSpeed,Time.deltaTime*5);
+        NewRot.y = Mathf.LerpAngle(NewRot.y, LRsteer * SteerSpeed *2 + dashTime* DashDirection*200 * (grounded? 5: 1), Time.deltaTime*10); 
+        NewRot.z = (!grounded & dashing) ? NewRot.z + 400*Time.deltaTime * -DashDirection : Mathf.LerpAngle(NewRot.z,-LRsteer*SteerSpeed,Time.deltaTime*5);
    //         -LRsteer * SteerSpeed;
 
         ModelHolder.localScale = grounded ? Vector3.one : new Vector3(Mathf.Clamp( timeSinceJump*timeSinceJump*1.5f - (jumping ? .2f : 0), 0.5f,1), Mathf.Clamp(1-timeSinceJump*timeSinceJump - (jumping?1f:0),Mathf.Max(timeSinceJump, 1),2f), Mathf.Clamp(timeSinceJump*timeSinceJump * 1.5f - (jumping ? .2f : 0), 0.5f, 1));
